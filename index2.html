@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requerimientos - U.R.Q. Arquitectura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 22px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .checkbox-group label {
+            flex-grow: 1;
+            text-align: left;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logo.png" alt="Logo" width="100">
+        <h1>Estás un paso más cerca de tu casa soñada, pero para eso necesitamos saber tus requerimientos</h1>
+        <form id="formulario" action="#" method="POST">
+            <label for="nombre">Nombre y Apellido:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+569 ..." required>
+            
+            <label for="direccion">Dirección del terreno:</label>
+            <input type="text" id="direccion" name="direccion" required>
+            
+            <label for="coordenadas">Indicaciones o coordenadas:</label>
+            <textarea id="coordenadas" name="coordenadas" rows="2"></textarea>
+            
+            <h3>Cuéntanos más de tu proyecto</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="primera_vivienda" name="primera_vivienda">
+                <label for="primera_vivienda">Es Primera Vivienda</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="segunda_vivienda" name="segunda_vivienda">
+                <label for="segunda_vivienda">Es Segunda Vivienda</label>
+            </div>
+            
+            <h3>Necesitamos saber qué recintos requiere tu hogar soñado</h3>
+            <div id="recintos"></div>
+            <h3>Total de superficie: <span id="total">0</span>m²</h3>
+            
+            <button type="button" onclick="capturarYEnviar()">Enviar</button>
+        </form>
+    </div>
+    
+    <script>
+        const recintos = [
+            ["VESTIBULO O CHIFLONERA", 7], ["ESTAR", 21], ["COMEDOR", 15],
+            ["COCINA", 17], ["DESPENSA", 3.8], ["LOGIA", 5.5],
+            ["CUARTO DE JUEGOS", 20], ["OFICINA", 6.5], ["ESTAR DE TV", 10],
+            ["BIBLIOTECA", 8], ["BODEGA", 6], ["DORMITORIO SUITE", 18],
+            ["DORMITORIO 1", 10], ["DORMITORIO 3", 10], ["DORMITORIO 4", 10],
+            ["BAÑO SUITE", 8], ["WALKING CLOSET", 7.5], ["BAÑO 1", 7],
+            ["BAÑO 2", 7], ["BAÑO VISTA 1/2 BAÑO", 3.2], ["COBERTIZO 1 VEHICULO", 9.5],
+            ["COBERTIZO 2 VEHICULOS", 20], ["BODEGA EXTERIOR", 9],
+            ["SALA DE CALDERAS", 5], ["QUINCHO", 40]
+        ];
+        let total = 0;
+        
+        const recintosContainer = document.getElementById("recintos");
+        recintos.forEach(([nombre, metros]) => {
+            const div = document.createElement("div");
+            div.classList.add("checkbox-group");
+            div.innerHTML = `<input type='checkbox' name='${nombre}' value='${metros}' onchange='calcularTotal()'>
+                             <label>${nombre} (${metros}m²)</label>`;
+            recintosContainer.appendChild(div);
+        });
+        
+        function calcularTotal() {
+            total = 0;
+            document.querySelectorAll("input[type=checkbox]:checked").forEach(e => total += parseFloat(e.value));
+            document.getElementById("total").innerText = total;
+        }
+        
+        function capturarYEnviar() {
+            html2canvas(document.body).then(canvas => {
+                const imgData = canvas.toDataURL("image/png");
+                const link = document.createElement("a");
+                link.href = imgData;
+                link.download = "captura.png";
+                link.click();
+                alert("Captura realizada y enviada a estudio@urq.cl (simulado)");
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
